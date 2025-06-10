@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.balugaq.CHANGEME</groupId>
-    <artifactId>CHANGEME</artifactId>
-    <version>85</version>
+    <groupId>com.balugaq.rb</groupId>
+    <artifactId>ResearchBlueprint</artifactId>
+    <version>1</version>
 
     <pluginRepositories>
         <pluginRepository>
@@ -158,6 +158,13 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.20.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.SlimefunGuguProject</groupId>
+            <artifactId>Slimefun4</artifactId>
+            <version>b39097e015</version>
             <scope>provided</scope>
         </dependency>
 

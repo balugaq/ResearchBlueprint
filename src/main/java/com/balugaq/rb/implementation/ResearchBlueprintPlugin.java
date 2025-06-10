@@ -1,5 +1,6 @@
-package com.balugaq.changeme.implementation;
+package com.balugaq.rb.implementation;
 
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -7,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import java.text.MessageFormat;
 
 @Getter
-public class Main extends JavaPlugin {
+public class ResearchBlueprintPlugin extends JavaPlugin implements SlimefunAddon {
     @Getter
-    private static Main instance;
+    private static ResearchBlueprintPlugin instance;
     @Getter
     private final @NotNull String username;
     @Getter
@@ -18,9 +19,9 @@ public class Main extends JavaPlugin {
     private final @NotNull String branch;
     private ConfigManager configManager;
 
-    public Main() {
+    public ResearchBlueprintPlugin() {
         this.username = "balugaq";
-        this.repo = "CHANGEME";
+        this.repo = "ResearchBlueprint";
         this.branch = "master";
     }
 
@@ -50,6 +51,11 @@ public class Main extends JavaPlugin {
 
         // Clear instance
         instance = null;
+    }
+
+    @Override
+    public @NotNull JavaPlugin getJavaPlugin() {
+        return this;
     }
 
     /**

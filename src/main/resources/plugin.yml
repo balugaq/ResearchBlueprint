@@ -1,7 +1,7 @@
-name: CHANGEME
+name: ResearchBlueprint
 author: balugaq
 description: This is a plugin
-main: com.balugaq.jeg.implementation.Main
-website: https://github.com/balugaq/CHANGEME
+main: com.balugaq.rb.implementation.ResearchBlueprintPlugin
+website: https://github.com/balugaq/ResearchBlueprint
 version: ${project.version}
 api-version: 1.20

@@ -1,4 +1,4 @@
-package com.balugaq.changeme.implementation;
+package com.balugaq.rb.implementation;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -39,7 +39,7 @@ public class Debug {
     }
 
     public static void debug(String message) {
-        if (Main.getConfigManager().isDebug()) {
+        if (ResearchBlueprintPlugin.getConfigManager().isDebug()) {
             log(debugPrefix + message);
         }
     }
@@ -108,7 +108,7 @@ public class Debug {
 
     public static void log(@NotNull String message) {
         init();
-        plugin.getServer().getConsoleSender().sendMessage("[" + Main.getInstance().getName() + "] " + ChatColor.translateAlternateColorCodes('&', message));
+        plugin.getServer().getConsoleSender().sendMessage("[" + ResearchBlueprintPlugin.getInstance().getName() + "] " + ChatColor.translateAlternateColorCodes('&', message));
     }
 
     public static void log(@NotNull Throwable e) {
@@ -121,7 +121,7 @@ public class Debug {
 
     public static void init() {
         if (plugin == null) {
-            plugin = Main.getInstance();
+            plugin = ResearchBlueprintPlugin.getInstance();
         }
     }
 
@@ -135,11 +135,11 @@ public class Debug {
 
     public static void trace(@NotNull Throwable e, @Nullable String doing, @Nullable Integer code) {
         init();
-        plugin.getLogger().severe("DO NOT REPORT THIS ERROR TO " + Main.getInstance().getName() + " DEVELOPERS!!! THIS IS NOT A " + Main.getInstance() + " BUG!");
+        plugin.getLogger().severe("DO NOT REPORT THIS ERROR TO " + ResearchBlueprintPlugin.getInstance().getName() + " DEVELOPERS!!! THIS IS NOT A " + ResearchBlueprintPlugin.getInstance() + " BUG!");
         if (code != null) {
             plugin.getLogger().severe("Error code: " + code);
         }
-        plugin.getLogger().severe("If you are sure that this is a " + Main.getInstance().getName() + " bug, please report to " + Main.getInstance().getBugTrackerURL());
+        plugin.getLogger().severe("If you are sure that this is a " + ResearchBlueprintPlugin.getInstance().getName() + " bug, please report to " + ResearchBlueprintPlugin.getInstance().getBugTrackerURL());
         if (doing != null) {
             plugin.getLogger().severe("An unexpected error occurred while " + doing);
         } else {

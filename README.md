@@ -1,1 +1,1 @@
-# PaperPluginTemplate
+# ResearchBlueprint
