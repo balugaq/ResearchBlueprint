@@ -1,0 +1,7 @@
+name: CHANGEME
+author: balugaq
+description: This is a plugin
+main: com.balugaq.jeg.implementation.Main
+website: https://github.com/balugaq/CHANGEME
+version: ${project.version}
+api-version: 1.20

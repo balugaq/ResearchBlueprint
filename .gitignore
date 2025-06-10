@@ -1,0 +1,13 @@
+/.idea/
+/.settings/
+/.vscode/
+/bin/
+/target/
+*.iml
+*.zip
+*.rar
+*.7z
+.DS_Store
+.classpath
+.project
+dependency-reduced-pom.xml
