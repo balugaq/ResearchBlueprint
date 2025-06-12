@@ -1,4 +1,4 @@
-package com.balugaq.rb.implementation.cfgparse.annotations;
+package com.balugaq.rb.api.cfgparse.annotations;
 
 import lombok.SneakyThrows;
 

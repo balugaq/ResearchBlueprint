@@ -1,8 +1,8 @@
 package com.balugaq.rb.implementation.initialization.parts;
 
-import com.balugaq.rb.implementation.cfgparse.annotations.Key;
-import com.balugaq.rb.implementation.cfgparse.annotations.Parsable;
-import com.balugaq.rb.implementation.cfgparse.annotations.Required;
+import com.balugaq.rb.api.cfgparse.annotations.Key;
+import com.balugaq.rb.api.cfgparse.annotations.Parsable;
+import com.balugaq.rb.api.cfgparse.annotations.Required;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;

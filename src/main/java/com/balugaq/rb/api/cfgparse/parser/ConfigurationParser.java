@@ -1,6 +1,6 @@
-package com.balugaq.rb.implementation.cfgparse.parser;
+package com.balugaq.rb.api.cfgparse.parser;
 
-import com.balugaq.rb.implementation.cfgparse.annotations.Key;
+import com.balugaq.rb.api.cfgparse.annotations.Key;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.bukkit.configuration.ConfigurationSection;

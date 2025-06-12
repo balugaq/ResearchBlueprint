@@ -1,8 +1,10 @@
 package com.balugaq.rb.implementation;
 
-import com.balugaq.rb.implementation.initialization.CustomResearchBlueprintApplier;
+import com.balugaq.rb.implementation.slimefun.CustomResearchBlueprintApplier;
 import com.balugaq.rb.implementation.initialization.ResearchConfigurations;
-import com.balugaq.rb.implementation.cfgparse.parser.ConfigurationParser;
+import com.balugaq.rb.api.cfgparse.parser.ConfigurationParser;
+import com.balugaq.rb.implementation.initialization.parts.ResearchConfiguration;
+import com.balugaq.rb.implementation.slimefun.Groups;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -52,7 +54,13 @@ public class ResearchBlueprintPlugin extends JavaPlugin implements SlimefunAddon
             configurations = new ResearchConfigurations(List.of());
         } else {
             configurations = ConfigurationParser.parse(researchesConfig, ResearchConfigurations.class);
+            for (ResearchConfiguration configuration : configurations.getConfigurations()) {
+                ResearchConfigurations.byIdentifier.put(configuration.getIdentifier(), configuration);
+            }
         }
+
+        // load Slimefun part
+        Groups.setup();
 
         Bukkit.getPluginManager().registerEvents(new CustomResearchBlueprintApplier(), this);
         getLogger().info("成功启用 " + getName());

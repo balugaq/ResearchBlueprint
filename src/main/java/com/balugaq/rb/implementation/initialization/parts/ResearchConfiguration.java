@@ -1,8 +1,8 @@
 package com.balugaq.rb.implementation.initialization.parts;
 
-import com.balugaq.rb.implementation.cfgparse.annotations.Key;
-import com.balugaq.rb.implementation.cfgparse.annotations.Parsable;
-import com.balugaq.rb.implementation.cfgparse.annotations.Required;
+import com.balugaq.rb.api.cfgparse.annotations.Key;
+import com.balugaq.rb.api.cfgparse.annotations.Parsable;
+import com.balugaq.rb.api.cfgparse.annotations.Required;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
@@ -11,12 +11,15 @@ import lombok.ToString;
 @ToString
 @Data
 public class ResearchConfiguration implements Parsable {
+    @Key("identifier")
+    String identifier;
+
     @Key("enabled")
     boolean enabled;
 
     @Required
-    @Key("type")
-    Type type;
+    @Key("research-type")
+    ResearchType researchType;
 
     @Key("blueprint")
     Blueprint blueprint;
@@ -37,8 +40,4 @@ public class ResearchConfiguration implements Parsable {
         return Parsable.fieldNames(ResearchConfiguration.class);
     }
 
-    enum Type {
-        RESEARCH_ALL,
-        RESEARCH_ANY
-    }
 }

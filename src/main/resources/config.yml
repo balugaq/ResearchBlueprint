@@ -1,7 +1,8 @@
 researches:
   class1:
+    identifier: class1
     enabled: true # true / false
-    type: research_any # research_any / research_all
+    research-type: research_any # research_any / research_all
     blueprint:
       material: book
       name: "Level 1 Research Blueprint"
