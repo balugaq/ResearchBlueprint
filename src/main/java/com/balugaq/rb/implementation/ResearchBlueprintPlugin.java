@@ -1,5 +1,6 @@
 package com.balugaq.rb.implementation;
 
+import com.balugaq.rb.implementation.command.ResearchBlueprintCommand;
 import com.balugaq.rb.implementation.slimefun.CustomResearchBlueprintApplier;
 import com.balugaq.rb.implementation.initialization.ResearchConfigurations;
 import com.balugaq.rb.api.cfgparse.parser.ConfigurationParser;
@@ -63,6 +64,7 @@ public class ResearchBlueprintPlugin extends JavaPlugin implements SlimefunAddon
         Groups.setup();
 
         Bukkit.getPluginManager().registerEvents(new CustomResearchBlueprintApplier(), this);
+        getCommand("rb").setExecutor(new ResearchBlueprintCommand());
         getLogger().info("成功启用 " + getName());
     }
 

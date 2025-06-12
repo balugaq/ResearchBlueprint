@@ -1,5 +1,6 @@
 package com.balugaq.rb.api.cfgparse.annotations;
 
-public interface DefaultValue<T> {
+// todo: 暂时没写检测
+public interface IDefaultValue<T> {
     T defaultValue();
 }

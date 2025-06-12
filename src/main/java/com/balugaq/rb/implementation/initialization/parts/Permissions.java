@@ -1,8 +1,8 @@
 package com.balugaq.rb.implementation.initialization.parts;
 
-import com.balugaq.rb.api.cfgparse.annotations.DefaultValue;
+import com.balugaq.rb.api.cfgparse.annotations.IDefaultValue;
 import com.balugaq.rb.api.cfgparse.annotations.Key;
-import com.balugaq.rb.api.cfgparse.annotations.Parsable;
+import com.balugaq.rb.api.cfgparse.annotations.IParsable;
 import com.balugaq.rb.api.cfgparse.annotations.Required;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Data
-public class Permissions implements DefaultValue<Permissions>, Parsable {
+public class Permissions implements IDefaultValue<Permissions>, IParsable {
     static final Permissions DEFAULT = new Permissions(Type.EXCLUDE_ANY, List.of());
     @Required
     @Key("type")
@@ -23,7 +23,7 @@ public class Permissions implements DefaultValue<Permissions>, Parsable {
     List<String> nodes;
 
     public static String[] fieldNames() {
-        return Parsable.fieldNames(Permissions.class);
+        return IParsable.fieldNames(Permissions.class);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class Permissions implements DefaultValue<Permissions>, Parsable {
         return DEFAULT;
     }
 
-    enum Type {
+    public enum Type {
         INCLUDE_ANY,
         INCLUDE_ALL,
         EXCLUDE_ANY,

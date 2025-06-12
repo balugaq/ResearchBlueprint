@@ -2,6 +2,7 @@ package com.balugaq.rb.implementation.slimefun;
 
 import com.balugaq.rb.implementation.Keys;
 import com.balugaq.rb.implementation.ResearchBlueprintPlugin;
+import com.balugaq.rb.implementation.command.ResearchBlueprintCommand;
 import com.balugaq.rb.implementation.initialization.ResearchConfigurations;
 import com.balugaq.rb.implementation.initialization.parts.ResearchConfiguration;
 import com.balugaq.rb.implementation.initialization.parts.ResearchType;
@@ -9,6 +10,7 @@ import com.balugaq.rb.implementation.initialization.parts.Scope;
 import com.balugaq.rb.implementation.initialization.parts.ScopeType;
 import io.github.thebusybiscuit.slimefun4.api.events.SlimefunItemRegistryFinalizedEvent;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import org.bukkit.ChatColor;
@@ -179,6 +181,7 @@ public class CustomResearchBlueprintApplier implements Listener {
             }
 
             generateResearches(configuration, applyTo);
+            generateSlimefunInstances(configuration);
         }
     }
 
@@ -194,7 +197,12 @@ public class CustomResearchBlueprintApplier implements Listener {
 
             r.addItems(applyTo.toArray(new SlimefunItem[0]));
 
-            r.register();
+            try {
+                r.register();
+                researches.put(configuration.getIdentifier(), Set.of(r));
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
         } else if (researchType == ResearchType.RESEARCH_ANY) {
             Set<Research> rs = new HashSet<>();
             for (var item : applyTo) {
@@ -208,11 +216,19 @@ public class CustomResearchBlueprintApplier implements Listener {
                 r.addItems(item);
                 try {
                     r.register();
+                    rs.add(r);
+                } catch (Throwable e) {
+                    e.printStackTrace();
                 }
-
-                rs.add(r);
             }
+            researches.put(configuration.getIdentifier(), rs);
         }
+    }
+
+    public static void generateSlimefunInstances(ResearchConfiguration configuration) {
+        var sfis = new SlimefunItemStack("RESEARCH_BLUEPRINT_" + configuration.getIdentifier(), configuration.icon());
+        configuration.setInstance(new ResearchBlueprint(sfis));
+        ResearchBlueprintCommand.blueprints.put(configuration.getIdentifier(), sfis);
     }
 
     public static String getResearchMessage(ResearchConfiguration configuration) {

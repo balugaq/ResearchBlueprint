@@ -1,8 +1,8 @@
 package com.balugaq.rb.implementation.initialization.parts;
 
-import com.balugaq.rb.api.cfgparse.annotations.DefaultValue;
+import com.balugaq.rb.api.cfgparse.annotations.IDefaultValue;
 import com.balugaq.rb.api.cfgparse.annotations.Key;
-import com.balugaq.rb.api.cfgparse.annotations.Parsable;
+import com.balugaq.rb.api.cfgparse.annotations.IParsable;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Data
-public class Blueprint implements DefaultValue<Blueprint>, Parsable {
+public class Blueprint implements IDefaultValue<Blueprint>, IParsable {
     static final Blueprint DEFAULT = new Blueprint(Material.KNOWLEDGE_BOOK, "Research Blueprint", List.of());
 
     public Blueprint(Material material, String name, List<String> lore) {
@@ -36,7 +36,7 @@ public class Blueprint implements DefaultValue<Blueprint>, Parsable {
     List<String> lore;
 
     public static String[] fieldNames() {
-        return Parsable.fieldNames(Blueprint.class);
+        return IParsable.fieldNames(Blueprint.class);
     }
 
     @Override

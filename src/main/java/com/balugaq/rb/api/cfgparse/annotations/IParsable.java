@@ -5,9 +5,9 @@ import lombok.SneakyThrows;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
-public interface Parsable {
+public interface IParsable {
     @SneakyThrows
-    static String[] fieldNames(Class<? extends Parsable> clazz) {
+    static String[] fieldNames(Class<? extends IParsable> clazz) {
         try {
             clazz.getDeclaredConstructor(Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(Key.class)).map(Field::getType).toArray(Class[]::new));
         } catch (NoSuchMethodException e) {

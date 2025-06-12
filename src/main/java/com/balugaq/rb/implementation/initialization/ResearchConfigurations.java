@@ -1,7 +1,7 @@
 package com.balugaq.rb.implementation.initialization;
 
 import com.balugaq.rb.api.cfgparse.annotations.Key;
-import com.balugaq.rb.api.cfgparse.annotations.Parsable;
+import com.balugaq.rb.api.cfgparse.annotations.IParsable;
 import com.balugaq.rb.implementation.initialization.parts.ResearchConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,12 +14,12 @@ import java.util.Map;
 @AllArgsConstructor
 @ToString
 @Data
-public class ResearchConfigurations implements Parsable {
+public class ResearchConfigurations implements IParsable {
     public static final Map<String, ResearchConfiguration> byIdentifier = new HashMap<>();
     @Key(Key.ALL_KEY)
     List<ResearchConfiguration> configurations;
 
     public static String[] fieldNames() {
-        return Parsable.fieldNames(ResearchConfigurations.class);
+        return IParsable.fieldNames(ResearchConfigurations.class);
     }
 }

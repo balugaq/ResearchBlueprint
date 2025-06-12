@@ -13,7 +13,7 @@ public class Groups {
                 Keys.newKey("hidden"),
                 new CustomItemStack(
                         Material.BLUE_DYE,
-                        "&7Hidden"
+                        "&7解锁蓝图"
                 )
         );
     }

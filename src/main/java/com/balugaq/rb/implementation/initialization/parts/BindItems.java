@@ -1,7 +1,7 @@
 package com.balugaq.rb.implementation.initialization.parts;
 
 import com.balugaq.rb.api.cfgparse.annotations.Key;
-import com.balugaq.rb.api.cfgparse.annotations.Parsable;
+import com.balugaq.rb.api.cfgparse.annotations.IParsable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Data
-public class BindItems implements Parsable {
+public class BindItems implements IParsable {
     @Key("regex")
     Regex regex;
 
@@ -17,6 +17,6 @@ public class BindItems implements Parsable {
     Items items;
 
     public static String[] fieldNames() {
-        return Parsable.fieldNames(BindItems.class);
+        return IParsable.fieldNames(BindItems.class);
     }
 }

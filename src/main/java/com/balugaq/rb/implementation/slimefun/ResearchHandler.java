@@ -17,9 +17,56 @@ public class ResearchHandler {
     public static void handleResearch(PlayerRightClickEvent event, ResearchConfiguration configuration) {
         Player player = event.getPlayer();
 
+        if(!hasPermission(player, configuration)) {
+            return;
+        }
+
         if (research(player, configuration)) {
             consumeBlueprint(player, event.getItem());
         }
+    }
+
+    public static boolean hasPermission(Player player, ResearchConfiguration configuration) {
+        var permissions = configuration.getPermissions();
+        var type = permissions.getType();
+        var nodes = permissions.getNodes();
+        switch (type) {
+            case EXCLUDE_ALL -> {
+                for (var node : nodes) {
+                    if (player.hasPermission(node)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            case EXCLUDE_ANY -> {
+                for (var node : nodes) {
+                    if (!player.hasPermission(node)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            case INCLUDE_ALL -> {
+                for (var node : nodes) {
+                    if (!player.hasPermission(node)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            case INCLUDE_ANY -> {
+                for (var node : nodes) {
+                    if (player.hasPermission(node)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        return false;
     }
 
     public static boolean research(Player player, ResearchConfiguration configuration) {
