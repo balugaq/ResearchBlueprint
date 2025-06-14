@@ -1,6 +1,8 @@
 package com.balugaq.rb.api.cfgparse.parser;
 
+import com.balugaq.rb.api.cfgparse.annotations.IDefaultValue;
 import com.balugaq.rb.api.cfgparse.annotations.Key;
+import com.sun.jdi.InterfaceType;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -105,42 +108,75 @@ public class ConfigurationParser {
     @SneakyThrows
     public static <T> T parseValue(@NotNull Class<T> clazz, @Nullable Object value) {
         if (value == null) {
-            return null;
+            Class<?>[] interfaces = clazz.getInterfaces();
+            for (Class<?> interfaceClass : interfaces) {
+                if (interfaceClass == IDefaultValue.class) {
+                    Method defaultValueMethod = clazz.getDeclaredMethod("defaultValue0");
+                    return (T) defaultValueMethod.invoke(null);
+                }
+            }
         }
 
         if (clazz == int.class) {
+            if (value == null) {
+                return (T) Integer.valueOf(0);
+            }
             return (T) Integer.valueOf(value.toString());
         }
 
         if (clazz == long.class) {
+            if (value == null) {
+                return (T) Long.valueOf(0);
+            }
             return (T) Long.valueOf(value.toString());
         }
 
         if (clazz == short.class) {
+            if (value == null) {
+                return (T) Short.valueOf((short) 0);
+            }
             return (T) Short.valueOf(value.toString());
         }
 
         if (clazz == char.class) {
+            if (value == null) {
+                return (T) Character.valueOf('\0');
+            }
             return (T) Character.valueOf(value.toString().charAt(0));
         }
 
         if (clazz == byte.class) {
+            if (value == null) {
+                return (T) Byte.valueOf((byte) 0);
+            }
             return (T) Byte.valueOf(value.toString());
         }
 
         if (clazz == float.class) {
+            if (value == null) {
+                return (T) Float.valueOf(0);
+            }
             return (T) Float.valueOf(value.toString());
         }
 
         if (clazz == double.class) {
+            if (value == null) {
+                return (T) Double.valueOf(0);
+            }
             return (T) Double.valueOf(value.toString());
         }
 
         if (clazz == boolean.class) {
+            if (value == null) {
+                return (T) Boolean.valueOf(false);
+            }
             return (T) Boolean.valueOf(value.toString());
         }
 
         if (clazz == String.class) {
+            if (value == null) {
+                return (T) "";
+            }
             return (T) value.toString();
         }
 
@@ -154,6 +190,9 @@ public class ConfigurationParser {
         }
 
         if (clazz.isArray()) {
+            if (value == null) {
+                return (T) Array.newInstance(clazz.getComponentType(), 0);
+            }
             return (T) value;
         }
 

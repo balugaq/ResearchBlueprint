@@ -1,5 +1,6 @@
 package com.balugaq.rb.implementation.slimefun;
 
+import com.balugaq.rb.implementation.Debug;
 import com.balugaq.rb.implementation.Keys;
 import com.balugaq.rb.implementation.ResearchBlueprintPlugin;
 import com.balugaq.rb.implementation.command.ResearchBlueprintCommand;
@@ -158,6 +159,7 @@ public class CustomResearchBlueprintApplier implements Listener {
 
     @EventHandler
     public void load(SlimefunItemRegistryFinalizedEvent event) {
+        Debug.debug("Registering all researches...");
         List<SlimefunItem> allItems = new ArrayList<>(Slimefun.getRegistry().getAllSlimefunItems());
 
         ResearchConfigurations configurations = ResearchBlueprintPlugin.getInstance().getConfigurations();
@@ -168,19 +170,27 @@ public class CustomResearchBlueprintApplier implements Listener {
 
             var bindItems = configuration.getBindItems();
             Set<SlimefunItem> applyTo = new HashSet<>();
+            Debug.log("Loading items");
             for (var itemDefine : bindItems.getItems().getDefines()) {
                 var scope = itemDefine.getScope();
                 var values = itemDefine.getValues();
                 getItemDefineApplier(scope).apply(allItems, values, applyTo);
             }
+            Debug.log("Loading regex");
             for (var regexDefine : bindItems.getRegex().getDefines()) {
                 var regex = regexDefine.getValue();
                 var scope = regexDefine.getScope();
                 var scopeType = regexDefine.getScopeType();
                 getRegexDefineApplier(scope, scopeType).apply(allItems, regex, scopeType, applyTo);
             }
+            Debug.log("Loading excludes");
+            for (var value : bindItems.getExcludes().getValue()) {
+                applyTo.removeIf(item -> item.getId().equals(value));
+            }
 
+            Debug.log("Generating researches for " + configuration.getIdentifier());
             generateResearches(configuration, applyTo);
+            Debug.log("Generating slimefun instances for " + configuration.getIdentifier());
             generateSlimefunInstances(configuration);
         }
     }
@@ -198,6 +208,7 @@ public class CustomResearchBlueprintApplier implements Listener {
             r.addItems(applyTo.toArray(new SlimefunItem[0]));
 
             try {
+                Debug.log("Registering research " + r.getKey().getKey());
                 r.register();
                 researches.put(configuration.getIdentifier(), Set.of(r));
             } catch (Throwable e) {
@@ -215,6 +226,7 @@ public class CustomResearchBlueprintApplier implements Listener {
 
                 r.addItems(item);
                 try {
+                    Debug.log("Registering research " + r.getKey().getKey());
                     r.register();
                     rs.add(r);
                 } catch (Throwable e) {
@@ -226,9 +238,11 @@ public class CustomResearchBlueprintApplier implements Listener {
     }
 
     public static void generateSlimefunInstances(ResearchConfiguration configuration) {
-        var sfis = new SlimefunItemStack("RESEARCH_BLUEPRINT_" + configuration.getIdentifier(), configuration.icon());
-        configuration.setInstance(new ResearchBlueprint(sfis));
+        var sfis = new SlimefunItemStack("RESEARCH_BLUEPRINT_" + configuration.getIdentifier().toUpperCase(), configuration.icon());
+        var instance = new ResearchBlueprint(sfis);
+        configuration.setInstance(instance);
         ResearchBlueprintCommand.blueprints.put(configuration.getIdentifier(), sfis);
+        instance.register(ResearchBlueprintPlugin.getInstance());
     }
 
     public static String getResearchMessage(ResearchConfiguration configuration) {

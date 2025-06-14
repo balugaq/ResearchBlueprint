@@ -1,8 +1,8 @@
 package com.balugaq.rb.implementation.initialization.parts;
 
 import com.balugaq.rb.api.cfgparse.annotations.IDefaultValue;
-import com.balugaq.rb.api.cfgparse.annotations.Key;
 import com.balugaq.rb.api.cfgparse.annotations.IParsable;
+import com.balugaq.rb.api.cfgparse.annotations.Key;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
@@ -12,22 +12,22 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Data
-public class Regex implements IParsable, IDefaultValue<Regex> {
-    @Key(Key.ALL_KEY)
-    List<RegexDefine> defines;
+public class Excludes implements IParsable, IDefaultValue<Excludes> {
+    @Key("value")
+    List<String> value;
 
     public static String[] fieldNames() {
-        return IParsable.fieldNames(Regex.class);
+        return IParsable.fieldNames(Excludes.class);
     }
 
-    static final Regex DEFAULT = new Regex(List.of());
+    static final Excludes DEFAULT = new Excludes(List.of());
 
-    public static Regex defaultValue0() {
+    public static Excludes defaultValue0() {
         return DEFAULT;
     }
 
     @Override
-    public Regex defaultValue() {
+    public Excludes defaultValue() {
         return defaultValue0();
     }
 }

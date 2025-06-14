@@ -22,8 +22,12 @@ public class BindSubcommands implements IDefaultValue<BindSubcommands>, IParsabl
         return IParsable.fieldNames(BindSubcommands.class);
     }
 
+    public static BindSubcommands defaultValue0() {
+        return DEFAULT;
+    }
+
     @Override
     public BindSubcommands defaultValue() {
-        return DEFAULT;
+        return defaultValue0();
     }
 }

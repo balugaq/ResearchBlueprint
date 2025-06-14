@@ -16,12 +16,13 @@ import java.util.List;
 @ToString
 @Data
 public class Blueprint implements IDefaultValue<Blueprint>, IParsable {
-    static final Blueprint DEFAULT = new Blueprint(Material.KNOWLEDGE_BOOK, "Research Blueprint", List.of());
+    static final Blueprint DEFAULT = new Blueprint(Material.KNOWLEDGE_BOOK, "Research Blueprint", List.of(), 0);
 
-    public Blueprint(Material material, String name, List<String> lore) {
+    public Blueprint(Material material, String name, List<String> lore, int customModelData) {
         this.material = material;
         this.name = name;
         this.lore = lore;
+        this.customModelData = customModelData;
     }
 
     ItemStack item = null;
@@ -35,13 +36,20 @@ public class Blueprint implements IDefaultValue<Blueprint>, IParsable {
     @Key("lore")
     List<String> lore;
 
+    @Key("custom-model-data")
+    int customModelData;
+
     public static String[] fieldNames() {
         return IParsable.fieldNames(Blueprint.class);
     }
 
+    public static Blueprint defaultValue0() {
+        return DEFAULT;
+    }
+
     @Override
     public Blueprint defaultValue() {
-        return DEFAULT;
+        return defaultValue0();
     }
 
     public ItemStack getItemStack() {
@@ -49,7 +57,7 @@ public class Blueprint implements IDefaultValue<Blueprint>, IParsable {
             return item;
         }
 
-        item = new CustomItemStack(material, name, lore);
+        item = new CustomItemStack(material, name, lore).setCustomModel(customModelData);
         return item;
     }
 }

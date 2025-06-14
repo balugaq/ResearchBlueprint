@@ -22,8 +22,12 @@ public class BypassPlayers implements IDefaultValue<BypassPlayers>, IParsable {
         return IParsable.fieldNames(BypassPlayers.class);
     }
 
+    public static BypassPlayers defaultValue0() {
+        return DEFAULT;
+    }
+
     @Override
     public BypassPlayers defaultValue() {
-        return DEFAULT;
+        return defaultValue0();
     }
 }

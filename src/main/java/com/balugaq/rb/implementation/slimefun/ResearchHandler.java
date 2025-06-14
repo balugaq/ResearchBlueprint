@@ -30,9 +30,19 @@ public class ResearchHandler {
         var permissions = configuration.getPermissions();
         var type = permissions.getType();
         var nodes = permissions.getNodes();
+        if (nodes.isEmpty()) {
+            return true;
+        }
+        if ("AVeryVeryLongLongLongStringToAvoidAnyPlayerNameMatchIt".equals(nodes.get(0))) {
+            return true;
+        }
+
         switch (type) {
             case EXCLUDE_ALL -> {
                 for (var node : nodes) {
+                    if (node.isBlank()) {
+                        continue;
+                    }
                     if (player.hasPermission(node)) {
                         return false;
                     }
@@ -41,6 +51,9 @@ public class ResearchHandler {
             }
             case EXCLUDE_ANY -> {
                 for (var node : nodes) {
+                    if (node.isBlank()) {
+                        continue;
+                    }
                     if (!player.hasPermission(node)) {
                         return true;
                     }
@@ -50,6 +63,9 @@ public class ResearchHandler {
             }
             case INCLUDE_ALL -> {
                 for (var node : nodes) {
+                    if (node.isBlank()) {
+                        continue;
+                    }
                     if (!player.hasPermission(node)) {
                         return false;
                     }
@@ -58,6 +74,9 @@ public class ResearchHandler {
             }
             case INCLUDE_ANY -> {
                 for (var node : nodes) {
+                    if (node.isBlank()) {
+                        continue;
+                    }
                     if (player.hasPermission(node)) {
                         return true;
                     }

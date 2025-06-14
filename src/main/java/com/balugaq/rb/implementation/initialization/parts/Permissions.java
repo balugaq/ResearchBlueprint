@@ -14,7 +14,7 @@ import java.util.List;
 @ToString
 @Data
 public class Permissions implements IDefaultValue<Permissions>, IParsable {
-    static final Permissions DEFAULT = new Permissions(Type.EXCLUDE_ANY, List.of());
+    static final Permissions DEFAULT = new Permissions(Type.EXCLUDE_ANY, List.of("AVeryVeryLongLongLongStringToAvoidAnyPlayerNameMatchIt"));
     @Required
     @Key("type")
     Type type;
@@ -26,9 +26,13 @@ public class Permissions implements IDefaultValue<Permissions>, IParsable {
         return IParsable.fieldNames(Permissions.class);
     }
 
+    public static Permissions defaultValue0() {
+        return DEFAULT;
+    }
+
     @Override
     public Permissions defaultValue() {
-        return DEFAULT;
+        return defaultValue0();
     }
 
     public enum Type {

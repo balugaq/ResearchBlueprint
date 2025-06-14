@@ -16,6 +16,9 @@ public class BindItems implements IParsable {
     @Key("items")
     Items items;
 
+    @Key("excludes")
+    Excludes excludes;
+
     public static String[] fieldNames() {
         return IParsable.fieldNames(BindItems.class);
     }
