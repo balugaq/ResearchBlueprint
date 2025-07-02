@@ -210,25 +210,27 @@ public class CustomResearchBlueprintApplier implements Listener {
                 r.register();
                 researches.put(configuration.getIdentifier(), Set.of(r));
             } catch (Throwable e) {
-                e.printStackTrace();
+                Debug.trace(e);
             }
         } else if (researchType == ResearchType.RESEARCH_ANY) {
             Set<Research> rs = new HashSet<>();
             for (var item : applyTo) {
+                var rid = getResearchId(configuration.getIdentifier() + item.getId());
                 var r = new Research(
-                        Keys.newKey(configuration.getIdentifier().toLowerCase()),
-                        getResearchId(configuration.getIdentifier() + item.getId()),
+                        Keys.newKey(configuration.getIdentifier().toLowerCase() + "_" + rid),
+                        rid,
                         getResearchMessageSingleton(configuration, item),
                         UNREACHABLE_LEVELS
                 );
 
                 r.addItems(item);
+
                 try {
                     Debug.log("Registering research " + r.getKey().getKey());
                     r.register();
                     rs.add(r);
                 } catch (Throwable e) {
-                    e.printStackTrace();
+                    Debug.trace(e);
                 }
             }
             researches.put(configuration.getIdentifier(), rs);

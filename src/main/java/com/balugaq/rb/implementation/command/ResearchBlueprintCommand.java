@@ -1,5 +1,8 @@
 package com.balugaq.rb.implementation.command;
 
+import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -11,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ResearchBlueprintCommand implements TabExecutor {
     public static final Map<String, ItemStack> blueprints = new HashMap<>();
@@ -30,6 +34,15 @@ public class ResearchBlueprintCommand implements TabExecutor {
         if (strings.length == 0) {
             commandSender.sendMessage("Usage: /rb <blueprint>");
             return false;
+        }
+
+        if (strings[0].equals("1")) {
+            // test
+            String s1;
+            var var = PlayerProfile.find((Player)commandSender).get();
+            s1 = var.getResearches().stream().map(Research::getUnlocalizedName).collect(Collectors.joining(", "));
+            Bukkit.getConsoleSender().sendMessage(s1);
+            return true;
         }
 
         ItemStack blueprint = blueprints.get(strings[0]);
