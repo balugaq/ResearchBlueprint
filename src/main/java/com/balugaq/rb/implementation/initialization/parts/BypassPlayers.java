@@ -5,10 +5,12 @@ import com.balugaq.rb.api.cfgparse.annotations.Key;
 import com.balugaq.rb.api.cfgparse.annotations.IParsable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Data

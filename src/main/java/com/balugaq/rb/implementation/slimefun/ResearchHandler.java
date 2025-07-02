@@ -2,10 +2,15 @@ package com.balugaq.rb.implementation.slimefun;
 
 import com.balugaq.rb.implementation.initialization.parts.ResearchConfiguration;
 import com.balugaq.rb.implementation.initialization.parts.ResearchType;
+import io.github.thebusybiscuit.slimefun4.api.events.PlayerPreResearchEvent;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
 import io.github.thebusybiscuit.slimefun4.api.researches.Research;
+import io.github.thebusybiscuit.slimefun4.core.guide.options.SlimefunGuideSettings;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.implementation.setup.PostSetup;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -105,7 +110,13 @@ public class ResearchHandler {
                     continue;
                 }
 
-                research.unlock(player, false);
+                PlayerPreResearchEvent event = new PlayerPreResearchEvent(player, research, research.getAffectedItems().get(0));
+                Bukkit.getPluginManager().callEvent(event);
+                if (!event.isCancelled()) {
+                    boolean skipLearningAnimation = Slimefun.getConfigManager().isLearningAnimationDisabled()
+                            || !SlimefunGuideSettings.hasLearningAnimationEnabled(player);
+                    research.unlock(player, skipLearningAnimation);
+                }
                 return true;
             }
         }

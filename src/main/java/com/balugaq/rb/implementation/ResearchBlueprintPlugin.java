@@ -6,7 +6,9 @@ import com.balugaq.rb.implementation.initialization.ResearchConfigurations;
 import com.balugaq.rb.api.cfgparse.parser.ConfigurationParser;
 import com.balugaq.rb.implementation.initialization.parts.ResearchConfiguration;
 import com.balugaq.rb.implementation.slimefun.Groups;
+import com.balugaq.rb.util.SlimefunRegistryUtil;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -70,6 +72,9 @@ public class ResearchBlueprintPlugin extends JavaPlugin implements SlimefunAddon
 
     @Override
     public void onDisable() {
+        SlimefunRegistryUtil.unregisterItems(this);
+        SlimefunRegistryUtil.unregisterItemGroups(this);
+
         this.configManager = null;
 
         getLogger().info("成功禁用 " + getName());

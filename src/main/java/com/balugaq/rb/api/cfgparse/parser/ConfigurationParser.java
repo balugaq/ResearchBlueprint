@@ -3,6 +3,7 @@ package com.balugaq.rb.api.cfgparse.parser;
 import com.balugaq.rb.api.cfgparse.annotations.IDefaultValue;
 import com.balugaq.rb.api.cfgparse.annotations.Key;
 import com.sun.jdi.InterfaceType;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.reflection.ReflectionUtils;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.bukkit.configuration.ConfigurationSection;
@@ -88,15 +89,33 @@ public class ConfigurationParser {
     public static <T> T consturctObject(Class<T> clazz, LinkedHashMap<Field, Object> read) {
         Class<?>[] types = read.keySet().stream().map(Field::getType).toArray(Class<?>[]::new);
         try {
-            Constructor<T> constructor = clazz.getDeclaredConstructor(types);
-            Object[] sortedValues = new Object[types.length];
+            Constructor<T> constructor = clazz.getDeclaredConstructor();
 
-            for (int i = 0; i < types.length; i++) {
-                var value = read.get(read.keySet().toArray()[i]);
-                sortedValues[i] = value;
+            T object = constructor.newInstance();
+            // find setter
+            for (var entry : read.entrySet()) {
+                // when field.getName() is "query"
+                // setterName: setQuery
+                // setterName2: query
+                Field field = entry.getKey();
+                String setterName = "set" + field.getName().substring(0, 1).toUpperCase(Locale.ROOT) + field.getName().substring(1);
+                Method setter = ReflectionUtils.getMethod(clazz, setterName);
+                if (setter != null) {
+                    Object arg = entry.getValue();
+                    setter.invoke(object, arg);
+                } else {
+                    String setterName2 = field.getName();
+                    setter = ReflectionUtils.getMethod(clazz, setterName2);
+                    if (setter != null) {
+                        Object arg = entry.getValue();
+                        setter.invoke(object, arg);
+                    } else {
+                        throw new RuntimeException("No setter found for " + field.getName() + " in " + clazz.getName());
+                    }
+                }
             }
 
-            return constructor.newInstance(sortedValues);
+            return object;
         } catch (NoSuchMethodException e) {
             throw new RuntimeException("No constructor found in " + clazz.getName(), e);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {

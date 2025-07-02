@@ -14,6 +14,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -170,20 +171,17 @@ public class CustomResearchBlueprintApplier implements Listener {
 
             var bindItems = configuration.getBindItems();
             Set<SlimefunItem> applyTo = new HashSet<>();
-            Debug.log("Loading items");
             for (var itemDefine : bindItems.getItems().getDefines()) {
                 var scope = itemDefine.getScope();
                 var values = itemDefine.getValues();
                 getItemDefineApplier(scope).apply(allItems, values, applyTo);
             }
-            Debug.log("Loading regex");
             for (var regexDefine : bindItems.getRegex().getDefines()) {
                 var regex = regexDefine.getValue();
                 var scope = regexDefine.getScope();
                 var scopeType = regexDefine.getScopeType();
                 getRegexDefineApplier(scope, scopeType).apply(allItems, regex, scopeType, applyTo);
             }
-            Debug.log("Loading excludes");
             for (var value : bindItems.getExcludes().getValue()) {
                 applyTo.removeIf(item -> item.getId().equals(value));
             }
@@ -199,9 +197,9 @@ public class CustomResearchBlueprintApplier implements Listener {
         var researchType = configuration.getResearchType();
         if (researchType == ResearchType.RESEARCH_ALL) {
             var r = new Research(
-                    Keys.newKey(configuration.getIdentifier()),
+                    Keys.newKey(configuration.getIdentifier().toLowerCase()),
                     getResearchId(configuration.getIdentifier()),
-                    getResearchMessage(configuration),
+                    getResearchMessage(configuration, applyTo),
                     UNREACHABLE_LEVELS
             );
 
@@ -218,9 +216,9 @@ public class CustomResearchBlueprintApplier implements Listener {
             Set<Research> rs = new HashSet<>();
             for (var item : applyTo) {
                 var r = new Research(
-                        Keys.newKey(configuration.getIdentifier()),
+                        Keys.newKey(configuration.getIdentifier().toLowerCase()),
                         getResearchId(configuration.getIdentifier() + item.getId()),
-                        getResearchMessage(configuration),
+                        getResearchMessageSingleton(configuration, item),
                         UNREACHABLE_LEVELS
                 );
 
@@ -245,9 +243,13 @@ public class CustomResearchBlueprintApplier implements Listener {
         instance.register(ResearchBlueprintPlugin.getInstance());
     }
 
-    public static String getResearchMessage(ResearchConfiguration configuration) {
+    public static String getResearchMessage(ResearchConfiguration configuration, Set<SlimefunItem> applyTo) {
         // no idea yet.
-        return "物品";
+        return ItemUtils.getItemName(configuration.getItem());
+    }
+
+    public static String getResearchMessageSingleton(ResearchConfiguration configuration, SlimefunItem item) {
+        return item.getItemName();
     }
 
     public static int getResearchId(String identifier) {

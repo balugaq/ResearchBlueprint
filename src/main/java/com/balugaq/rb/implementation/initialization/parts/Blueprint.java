@@ -6,12 +6,14 @@ import com.balugaq.rb.api.cfgparse.annotations.IParsable;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Data

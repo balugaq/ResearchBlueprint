@@ -7,12 +7,14 @@ import com.balugaq.rb.implementation.slimefun.ResearchBlueprint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.PackagePrivate;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Data
