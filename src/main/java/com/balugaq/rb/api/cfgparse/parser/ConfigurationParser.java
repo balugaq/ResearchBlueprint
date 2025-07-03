@@ -2,7 +2,6 @@ package com.balugaq.rb.api.cfgparse.parser;
 
 import com.balugaq.rb.api.cfgparse.annotations.IDefaultValue;
 import com.balugaq.rb.api.cfgparse.annotations.Key;
-import com.sun.jdi.InterfaceType;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.reflection.ReflectionUtils;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -24,6 +23,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+@SuppressWarnings({"unchecked", "unused"})
 @UtilityClass
 @ApiStatus.Obsolete
 public class ConfigurationParser {
@@ -55,9 +55,9 @@ public class ConfigurationParser {
                     Key define = field.getAnnotation(Key.class);
                     String key = define.value();
                     if (Key.ALL_KEY.equals(key)) {
-                        Set<String> subkKys = section.getKeys(false);
+                        Set<String> subKeys = section.getKeys(false);
                         List<Object> arg = new ArrayList<>();
-                        for (var subKey : subkKys) {
+                        for (var subKey : subKeys) {
                             if (List.class.isAssignableFrom(field.getType()) && field.getType().getTypeParameters().length > 0 && field.getGenericType() instanceof ParameterizedType parameterizedType && parameterizedType.getActualTypeArguments()[0] instanceof Class<?> genericType) {
                                 var value = parseValue(genericType, section.get(subKey));
                                 arg.add(value);
@@ -87,7 +87,6 @@ public class ConfigurationParser {
     @ParametersAreNonnullByDefault
     @SneakyThrows
     public static <T> T consturctObject(Class<T> clazz, LinkedHashMap<Field, Object> read) {
-        Class<?>[] types = read.keySet().stream().map(Field::getType).toArray(Class<?>[]::new);
         try {
             Constructor<T> constructor = clazz.getDeclaredConstructor();
 
@@ -99,13 +98,13 @@ public class ConfigurationParser {
                 // setterName2: query
                 Field field = entry.getKey();
                 String setterName = "set" + field.getName().substring(0, 1).toUpperCase(Locale.ROOT) + field.getName().substring(1);
-                Method setter = ReflectionUtils.getMethod(clazz, setterName);
+                Method setter = ReflectionUtils.getMethod(clazz, setterName, field.getType());
                 if (setter != null) {
                     Object arg = entry.getValue();
                     setter.invoke(object, arg);
                 } else {
                     String setterName2 = field.getName();
-                    setter = ReflectionUtils.getMethod(clazz, setterName2);
+                    setter = ReflectionUtils.getMethod(clazz, setterName2, field.getType());
                     if (setter != null) {
                         Object arg = entry.getValue();
                         setter.invoke(object, arg);
@@ -123,6 +122,7 @@ public class ConfigurationParser {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @ApiStatus.Obsolete
     @SneakyThrows
     public static <T> T parseValue(@NotNull Class<T> clazz, @Nullable Object value) {
@@ -202,7 +202,9 @@ public class ConfigurationParser {
         if (clazz.isEnum()) {
             Class<? extends Enum> enumClass = (Class<? extends Enum>) clazz;
             try{
-                return (T) Enum.valueOf(enumClass, value.toString().toUpperCase(Locale.ROOT));
+                if (value != null) {
+                    return (T) Enum.valueOf(enumClass, value.toString().toUpperCase(Locale.ROOT));
+                }
             } catch (IllegalArgumentException e) {
                 throw new RuntimeException("Cannot find enum value in " + clazz.getName() + ": " + value, e);
             }
@@ -212,7 +214,12 @@ public class ConfigurationParser {
             if (value == null) {
                 return (T) Array.newInstance(clazz.getComponentType(), 0);
             }
-            return (T) value;
+
+            List<?> list = (List<?>) value;
+
+            @SuppressWarnings("unchecked")
+            T array = (T) list.toArray((Object[]) Array.newInstance(clazz.getComponentType(), 0));
+            return array;
         }
 
         if (value instanceof ConfigurationSection section) {
