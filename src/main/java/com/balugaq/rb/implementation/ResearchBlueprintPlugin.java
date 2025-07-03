@@ -6,6 +6,7 @@ import com.balugaq.rb.implementation.initialization.ResearchConfigurations;
 import com.balugaq.rb.api.cfgparse.parser.ConfigurationParser;
 import com.balugaq.rb.implementation.initialization.parts.ResearchConfiguration;
 import com.balugaq.rb.implementation.slimefun.Groups;
+import com.balugaq.rb.implementation.slimefun.Items;
 import com.balugaq.rb.util.SlimefunRegistryUtil;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.researches.Research;
@@ -64,7 +65,7 @@ public class ResearchBlueprintPlugin extends JavaPlugin implements SlimefunAddon
 
         // load Slimefun part
         Groups.setup();
-
+        Items.setup();
         Bukkit.getPluginManager().registerEvents(new CustomResearchBlueprintApplier(), this);
         getCommand("rb").setExecutor(new ResearchBlueprintCommand());
         getLogger().info("成功启用 " + getName());
@@ -74,7 +75,8 @@ public class ResearchBlueprintPlugin extends JavaPlugin implements SlimefunAddon
     public void onDisable() {
         SlimefunRegistryUtil.unregisterItems(this);
         SlimefunRegistryUtil.unregisterItemGroups(this);
-
+        getCommand("rb").setExecutor(null);
+        getCommand("rbcallback").setExecutor(null);
         this.configManager = null;
 
         getLogger().info("成功禁用 " + getName());
