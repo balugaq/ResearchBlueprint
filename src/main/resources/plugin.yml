@@ -10,6 +10,10 @@ commands:
     aliases: researchblueprint
     description: ResearchBlueprint base command
     usage: The ResearchBlueprint version you have installed does not seem to be compatible with your server setup. Check your console for more detailed info.
+  rbcallback:
+    aliases: researchblueprint
+    description: ResearchBlueprint base command
+    usage: The ResearchBlueprint version you have installed does not seem to be compatible with your server setup. Check your console for more detailed info.
 depend:
   - Slimefun
 softdepend:
