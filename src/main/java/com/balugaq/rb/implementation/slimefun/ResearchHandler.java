@@ -109,13 +109,13 @@ public class ResearchHandler {
                     continue;
                 }
 
-                PlayerPreResearchEvent event = new PlayerPreResearchEvent(player, research, research.getAffectedItems().get(0));
-                Bukkit.getPluginManager().callEvent(event);
-                if (!event.isCancelled()) {
+//                PlayerPreResearchEvent event = new PlayerPreResearchEvent(player, research, research.getAffectedItems().get(0));
+//                Bukkit.getPluginManager().callEvent(event);
+//                if (!event.isCancelled()) {
                     boolean skipLearningAnimation = Slimefun.getConfigManager().isLearningAnimationDisabled()
                             || !SlimefunGuideSettings.hasLearningAnimationEnabled(player);
                     research.unlock(player, skipLearningAnimation);
-                }
+//                }
                 return true;
             }
         }

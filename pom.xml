@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.balugaq.rb</groupId>
     <artifactId>ResearchBlueprint</artifactId>
-    <version>1</version>
+    <version>2</version>
 
     <pluginRepositories>
         <pluginRepository>
